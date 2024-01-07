@@ -1,0 +1,10 @@
+node_modules/
+logs/
+dist/
+.env
+public/
+/src/config/service-acc-key.json
+*.log
+ormconfig.json
+*.pyc
+.DS_Store
