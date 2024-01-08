@@ -1,0 +1,23 @@
+version: "1.0"
+services:
+  postgres:
+    user: postgres
+    build:
+      context: ./pg
+      dockerfile: Dockerfile
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    env_file:
+      - ./pg/.env
+    restart: always
+    ports:
+      - 5431:5432
+
+volumes:
+  pg_data:
+
