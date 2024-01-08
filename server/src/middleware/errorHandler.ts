@@ -22,8 +22,6 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
         request.method
       } - ${request.ip}`
     );
-    logger.error(`Error: `, error);
-    logger.error("Body: ", JSON.stringify(request.body));
     if (error instanceof APIError) {
       response.status(error.httpCode).json(error.toJSON());
     } else if (error instanceof HttpError) {
@@ -31,10 +29,14 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
         status: error.httpCode,
         msg: "Something went wrong",
       });
+    } else if (error.name === "TokenExpiredError") {
+      response.status(401).json({
+        msg: "Unauthorized",
+      });
     } else {
       response.status(500).json({
         status: 500,
-        msg: "Something went wrong",
+        msg: error.message,
       });
     }
     // next(error);

@@ -58,4 +58,32 @@ export class BookService {
       ResponseStatus.ERROR
     );
   }
+
+  async userBooks(userId: number) {
+    const books = await getConnection()
+      .getRepository(Books)
+      .find({
+        where: {
+          userId,
+        },
+        select: ["id", "name", "title", "isPublish", "createdAt"],
+        order: {
+          createdAt: "DESC",
+        },
+      });
+    return books;
+  }
+
+  async publishedBooks() {
+    return await getConnection()
+      .getRepository(Books)
+      .find({
+        where: {
+          isPublish: true,
+        },
+        order: {
+          createdAt: "DESC",
+        },
+      });
+  }
 }

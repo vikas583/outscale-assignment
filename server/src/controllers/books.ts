@@ -85,9 +85,39 @@ export class BooksController {
 
   @Authorized()
   @Get("/user")
-  async booksByUser() {}
+  async booksByUser(@CurrentUser() user: User, @Res() res: Response) {
+    try {
+      const books = await this.bookService.userBooks(user.id);
+      return res.status(ResponseStatus.SUCCESS).send({
+        status: true,
+        message: "Books fetched successfully!",
+        data: books,
+      });
+    } catch (error) {
+      return res.status(ResponseStatus.ERROR).send({
+        status: false,
+        message: "Something went wrong, try again later!",
+      });
+    }
+  }
 
   @Authorized()
   @Get("/published")
-  async publishedBooks() {}
+  async publishedBooks(@Res() res: Response) {
+    try {
+      const publishedBooks = await this.bookService.publishedBooks();
+
+      return res.status(ResponseStatus.SUCCESS).send({
+        status: true,
+        message: "Fetched successfully!",
+        data: publishedBooks,
+      });
+    } catch (error) {
+      logger.error(error);
+      return res.status(ResponseStatus.ERROR).send({
+        status: false,
+        message: "Something went wrong, try again later!",
+      });
+    }
+  }
 }
