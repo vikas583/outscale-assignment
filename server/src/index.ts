@@ -25,14 +25,21 @@ async function run() {
     useContainer(Container);
 
     const app = express();
-    app.use(express.json({ limit: "50mb" }));
-    app.all("/*", (_req, res, next) => {
+    app.use(express.json());
+    
+    app.use("/*", (_req, res, next) => {
       res.header("Access-Control-Allow-Origin", process.env.CORS_DOMAINS);
       res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
       res.header("Access-Control-Allow-Headers", "*");
-
-      next();
+      if (_req.method === "OPTIONS") {
+        res.sendStatus(200); // Respond to OPTIONS requests with 200 OK
+      } else {
+        next();
+      }
     });
+
+    
+
     app.use(express.static(path.join(__dirname, "../public")));
 
     app.use(

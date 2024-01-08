@@ -59,7 +59,7 @@ export class BookService {
     );
   }
 
-  async userBooks(userId: number) {
+  async userBooks(userId: number, skip: number, limit: number) {
     const books = await getConnection()
       .getRepository(Books)
       .find({
@@ -70,11 +70,13 @@ export class BookService {
         order: {
           createdAt: "DESC",
         },
+        skip: skip,
+        take: limit,
       });
-    return books;
+    return { books, total: books.length };
   }
 
-  async publishedBooks() {
+  async publishedBooks(skip: number, limit: number) {
     return await getConnection()
       .getRepository(Books)
       .find({
@@ -84,6 +86,8 @@ export class BookService {
         order: {
           createdAt: "DESC",
         },
+        skip: skip,
+        take: limit,
       });
   }
 }

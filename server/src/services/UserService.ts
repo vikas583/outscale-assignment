@@ -42,7 +42,7 @@ export class UserService {
         .getRepository(UserModel)
         .findOne({
           where: [{ email: obj.email }],
-          select: ["id", "name", "email", "password"],
+          select: ["id", "name", "email", "password","roles"],
         });
       if (!ifUserExist) {
         throw new APIError("User doesn't exsist!", ResponseStatus.NOT_FOUND);
@@ -66,10 +66,10 @@ export class UserService {
         id: ifUserExist.id,
         name: ifUserExist.name,
         email: ifUserExist.email,
-        token: auth_token,
+        roles: ifUserExist.roles,
       };
 
-      return user_details;
+      return {token: auth_token, user: user_details};
     } catch (error) {
       logger.error(error);
       throw new APIError(error.message, ResponseStatus.ERROR);

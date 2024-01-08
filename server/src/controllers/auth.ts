@@ -29,7 +29,7 @@ export class AuthController {
       const data = await this.userService.login(body);
       return res
         .status(ResponseStatus.SUCCESS)
-        .json({ status: true, message: "Logged in successfully!", data });
+        .send(data);
     } catch (error) {
       logger.error(error);
       return res.status(ResponseStatus.ERROR).json({

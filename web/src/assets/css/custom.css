@@ -1,0 +1,12 @@
+.table-head th {
+  font-size: 0.5rem !important;
+  color: black !important;
+}
+
+.table-body td {
+  font-size: 0.65rem !important;
+}
+
+.business-detail label {
+  font-size: 0.70rem;
+}

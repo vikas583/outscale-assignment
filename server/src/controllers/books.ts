@@ -10,7 +10,11 @@ import {
   QueryParams,
   Res,
 } from "routing-controllers";
-import { BookPublishRequest, ResponseStatus } from "../types";
+import {
+  BookPublishRequest,
+  ResponseStatus,
+  SkipLimitURLParams,
+} from "../types";
 import { Inject, Service } from "typedi";
 import logger from "../utils/logger";
 import { Response } from "express";
@@ -84,15 +88,15 @@ export class BooksController {
   }
 
   @Authorized()
-  @Get("/user")
-  async booksByUser(@CurrentUser() user: User, @Res() res: Response) {
+  @Get("/user/:skip/:limit")
+  async booksByUser(
+    @CurrentUser() user: User,
+    @Res() res: Response,
+    @Params({ validate: true }) { skip, limit }: SkipLimitURLParams
+  ) {
     try {
-      const books = await this.bookService.userBooks(user.id);
-      return res.status(ResponseStatus.SUCCESS).send({
-        status: true,
-        message: "Books fetched successfully!",
-        data: books,
-      });
+      const books = await this.bookService.userBooks(user.id, +skip, +limit);
+      return res.status(ResponseStatus.SUCCESS).send(books);
     } catch (error) {
       return res.status(ResponseStatus.ERROR).send({
         status: false,
@@ -102,10 +106,16 @@ export class BooksController {
   }
 
   @Authorized()
-  @Get("/published")
-  async publishedBooks(@Res() res: Response) {
+  @Get("/published/:skip/:limit")
+  async publishedBooks(
+    @Res() res: Response,
+    @Params({ validate: true }) { skip, limit }: SkipLimitURLParams
+  ) {
     try {
-      const publishedBooks = await this.bookService.publishedBooks();
+      const publishedBooks = await this.bookService.publishedBooks(
+        +skip,
+        +limit
+      );
 
       return res.status(ResponseStatus.SUCCESS).send({
         status: true,

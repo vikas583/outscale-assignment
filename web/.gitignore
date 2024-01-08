@@ -1,0 +1,7 @@
+/build
+/node_modules
+/build
+.eslintcache
+.env
+*.log
+.DS_STORE
