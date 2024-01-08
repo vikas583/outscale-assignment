@@ -8,3 +8,4 @@ public/
 ormconfig.json
 *.pyc
 .DS_Store
+o-r-m.json

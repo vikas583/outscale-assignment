@@ -1,13 +1,14 @@
 module.exports = {
   apps: [{
-    name: "fintex-server",
-    instances: 1,
-    script: "./dist/index.js",
+    name: 'outscale', 
+    script: 'yarn',
+    args: 'run dev',
+    interpreter: '/bin/bash',
+    autorestart: true,
+    watch: true,
+    ignore_watch: ['node_modules'],
     env: {
-      NODE_ENV: "development",
+      NODE_ENV: 'development',
     },
-    env_production: {
-      NODE_ENV: "production",
-    }
-  }]
-}
+  }],
+};
