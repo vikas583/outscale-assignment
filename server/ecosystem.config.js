@@ -1,14 +1,15 @@
 module.exports = {
-  apps: [{
-    name: 'outscale', 
-    script: 'yarn',
-    args: 'run dev',
-    interpreter: '/bin/bash',
-    autorestart: true,
-    watch: true,
-    ignore_watch: ['node_modules'],
-    env: {
-      NODE_ENV: 'development',
+  apps: [
+    {
+      name: "proc-outscale-server",
+      instances: 1,
+      script: "./dist/index.js",
+      env: {
+        NODE_ENV: "development",
+      },
+      env_production: {
+        NODE_ENV: "production",
+      },
     },
-  }],
+  ],
 };
